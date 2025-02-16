@@ -33,7 +33,7 @@ class IniciarSesion(tk.Frame): #Ventana de inicio de sesión, aparecerá cada qu
 
 class RegistrarUsuario(tk.Frame): #Registro de usuarios
     def __init__(self, master):
-        super().__init__(master, bg='#B2FFF9')  # Set bg for the frame
+        super().__init__(master, bg='#B2FFF9')  #Color de fondo para el campo de registro
         self.master = master
 
         tk.Label(self, text="Nombre de usuario:", bg='#B2FFF9', fg='black').pack()
@@ -128,7 +128,7 @@ class AppCitasMedicas(tk.Tk):
 
 class GestionCitas(tk.Frame):
     def __init__(self, master, usuario):
-        super().__init__(master, bg='#B2FFF9')  # Set bg for the frame
+        super().__init__(master, bg='#B2FFF9')  
         self.master = master
         self.usuario = usuario
 
