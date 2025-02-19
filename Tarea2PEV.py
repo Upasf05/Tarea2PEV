@@ -47,7 +47,7 @@ class RegistrarUsuario(tk.Frame): #Registro de usuarios
         tk.Button(self, text="Registrar", command=self.registrar_usuario, bg='lightblue', fg='black').pack()
         tk.Button(self, text="Volver", command=self.master.show_iniciar_sesion, bg='lightcoral', fg='black').pack()
 
-    def registrar_usuario(self):
+    def registrar_usuario(self): #Método para registrar usuario
         nombre = self.entry_usuario.get().strip()
         password = self.entry_password.get().strip()
 
@@ -68,7 +68,7 @@ class RegistrarUsuario(tk.Frame): #Registro de usuarios
 
         self.master.show_iniciar_sesion()
         
-class Cita:
+class Cita: #Clase para definir citas
     def __init__(self, paciente, nombre_medico, especialidad, fecha, hora):
         self.paciente = paciente
         self.nombre_medico = nombre_medico
@@ -76,20 +76,20 @@ class Cita:
         self.fecha = fecha
         self.hora = hora
 
-    def __str__(self):
+    def __str__(self): #Devolver parámetros introducidos cuando se agende una cita
         return f"Cita del/la paciente {self.paciente} con el médico/a {self.especialidad} de {self.nombre_medico} el {self.fecha} a las {self.hora}"
 
-class Usuario:
+class Usuario: #Clase para usuario con sus datos
     def __init__(self, nombre, password, es_admin=False):
         self.nombre = nombre
         self.password = password
         self.es_admin = es_admin
         self.citas = []
 
-class Data:
-    usuarios = []
+class Data: #Clase para almacenar usuarios
+    usuarios = [] #Al inicio no habrá ninguno
 
-class AppCitasMedicas(tk.Tk):
+class AppCitasMedicas(tk.Tk): #Clase con la interfaz de la aplicación
     def __init__(self):
         super().__init__()
         self.title("SISTEMA DE CITAS MÉDICAS")
@@ -102,31 +102,31 @@ class AppCitasMedicas(tk.Tk):
         self.actualizar_reloj()
         self.show_iniciar_sesion()
 
-    def actualizar_reloj(self):
+    def actualizar_reloj(self): #Fecha y hora en tiempo real
         """Actualiza la hora en tiempo real."""
         now = time.strftime("%Y-%m-%d %H:%M:%S")
         self.reloj_label.config(text=f"Fecha y Hora: {now}")
         self.after(1000, self.actualizar_reloj)
 
-    def show_iniciar_sesion(self):
+    def show_iniciar_sesion(self): #Método que muestra ventana de iniciar sesión
         if self.current_frame:
             self.current_frame.destroy()
         self.current_frame = IniciarSesion(self)
         self.current_frame.pack()
 
-    def show_registrar_usuario(self):
+    def show_registrar_usuario(self): #Método que muestra ventana de registro
         if self.current_frame:
             self.current_frame.destroy()
         self.current_frame = RegistrarUsuario(self)
         self.current_frame.pack()
 
-    def show_gestion_citas(self, usuario):
+    def show_gestion_citas(self, usuario): #Método que muestra la ventana de gestión de citas
         if self.current_frame:
             self.current_frame.destroy()
         self.current_frame = GestionCitas(self, usuario)
         self.current_frame.pack()
 
-class GestionCitas(tk.Frame):
+class GestionCitas(tk.Frame): #Clase con el sistema de gestión de citas
     def __init__(self, master, usuario):
         super().__init__(master, bg='#B2FFF9')  
         self.master = master
@@ -140,7 +140,7 @@ class GestionCitas(tk.Frame):
         tk.Button(self, text="Eliminar Cita", command=self.eliminar_cita, bg='lightcoral', fg='black').pack()
         tk.Button(self, text="Cerrar Sesión", command=self.cerrar_sesion, bg='lightyellow', fg='black').pack()
 
-    def actualizar_lista_citas(self):
+    def actualizar_lista_citas(self): #Método para actualizar citas
         self.citas_listbox.delete(0, tk.END)
         if self.usuario.es_admin:
             for user in Data.usuarios:
@@ -150,7 +150,7 @@ class GestionCitas(tk.Frame):
             for cita in self.usuario.citas:
                 self.citas_listbox.insert(tk.END, cita)
 
-    def existe_cita(self, fecha, hora):
+    def existe_cita(self, fecha, hora): #Método para evitar citas con la misma fecha y/o hora
         """Verifica si ya existe una cita en la misma fecha y hora."""
         for user in Data.usuarios:
             for cita in user.citas:
@@ -158,14 +158,14 @@ class GestionCitas(tk.Frame):
                     return True
         return False
 
-    def agendar_cita(self):
+    def agendar_cita(self): #Método para agendar citas
         paciente = self.usuario.nombre
         especialidad = simpledialog.askstring("Especialidad", "Ingrese la especialidad médica:")
         nombre_medico = simpledialog.askstring("Médico", "Ingrese el nombre del médico:")
         fecha = simpledialog.askstring("Fecha", "Ingrese la fecha (YYYY-MM-DD):")
         hora = simpledialog.askstring("Hora", "Ingrese la hora (HH:MM):")
 
-        if not (especialidad and fecha and hora):
+        if not (especialidad and fecha and hora): #If para obligar al usuario a rellenar todos los campos
             messagebox.showerror("Error", "Todos los campos son obligatorios.")
             return
 
@@ -176,22 +176,22 @@ class GestionCitas(tk.Frame):
             messagebox.showerror("Error", "Formato de fecha u hora incorrecto.")
             return
         
-        cita_datetime = datetime.combine(fecha_datetime.date(), hora_datetime.time())
+        cita_datetime = datetime.combine(fecha_datetime.date(), hora_datetime.time()) #Juntar variables fecha y hora en una sola
 
-        now = datetime.now()
+        now = datetime.now() #Variable que representa el método actual
 
-        if cita_datetime < now:
+        if cita_datetime < now: #If para evitar fechas y horas anteriores a la actual
             messagebox.showerror("Error", "No se puede agendar una cita antes de la fecha y hora actuales.")
         if self.existe_cita(fecha, hora):
             messagebox.showerror("Error", "Ya existe una cita en esa fecha y hora.")
             return
 
-        nueva_cita = Cita(paciente, especialidad, nombre_medico, fecha, hora)
+        nueva_cita = Cita(paciente, especialidad, nombre_medico, fecha, hora) #Juntar las variables necearias para crear una nueva cita
         self.usuario.citas.append(nueva_cita)
         self.actualizar_lista_citas()
         messagebox.showinfo("Éxito", "Cita agendada correctamente.")
 
-    def eliminar_cita(self):
+    def eliminar_cita(self): #Método para eliminar una cita
         seleccion = self.citas_listbox.curselection()
         if not seleccion:
             messagebox.showerror("Error", "Seleccione una cita para eliminar.")
@@ -201,9 +201,9 @@ class GestionCitas(tk.Frame):
         self.actualizar_lista_citas()
         messagebox.showinfo("Eliminado", "La cita ha sido eliminada correctamente.")
 
-    def cerrar_sesion(self):
+    def cerrar_sesion(self): #Método para cerrar cesión
         self.master.show_iniciar_sesion()
 
-if __name__ == "__main__":
+if __name__ == "__main__": #If que permite el funcionamiento de la aplicación con su respectiva interfaz gráfica
     app = AppCitasMedicas()
     app.mainloop()
