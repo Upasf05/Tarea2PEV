@@ -8,16 +8,16 @@ class IniciarSesion(tk.Frame): #Ventana de inicio de sesión, aparecerá cada qu
         super().__init__(master, bg='#B2FFF9') #Color de fondo
         self.master = master
 
-        tk.Label(self, text="Usuario:", bg='#B2FFF9', fg='black').pack() #Campo de usuario
+        tk.Label(self, text="Usuario:", bg='#B2FFF9', fg='black').pack(pady=(10, 5)) #Campo de usuario
         self.entry_usuario = tk.Entry(self)
-        self.entry_usuario.pack()
+        self.entry_usuario.pack(pady=(0, 10))
 
-        tk.Label(self, text="Contraseña:", bg='#B2FFF9', fg='black').pack() #Campo para contraseña
+        tk.Label(self, text="Contraseña:", bg='#B2FFF9', fg='black').pack(pady=(10, 5)) #Campo para contraseña
         self.entry_password = tk.Entry(self, show="*")
-        self.entry_password.pack()
+        self.entry_password.pack(pady=(0, 10))
 
-        tk.Button(self, text="Iniciar Sesión", command=self.iniciar_sesion, bg='lightblue', fg='black').pack()
-        tk.Button(self, text="Registrar", command=self.master.show_registrar_usuario, bg='lightgreen', fg='black').pack()
+        tk.Button(self, text="Iniciar Sesión", command=self.iniciar_sesion, bg='lightblue', fg='black').pack(pady=5)
+        tk.Button(self, text="Registrar", command=self.master.show_registrar_usuario, bg='lightgreen', fg='black').pack(pady=5)
 
     def iniciar_sesion(self): #Efectuar el inicio de sesión
         usuario = self.entry_usuario.get()
@@ -36,16 +36,16 @@ class RegistrarUsuario(tk.Frame): #Registro de usuarios
         super().__init__(master, bg='#B2FFF9')  #Color de fondo para el campo de registro
         self.master = master
 
-        tk.Label(self, text="Nombre de usuario:", bg='#B2FFF9', fg='black').pack()
+        tk.Label(self, text="Nombre de usuario:", bg='#B2FFF9', fg='black').pack((pady=(10, 5))
         self.entry_usuario = tk.Entry(self)
-        self.entry_usuario.pack()
+        self.entry_usuario.pack((pady=(0, 10))
 
-        tk.Label(self, text="Contraseña:", bg='#B2FFF9', fg='black').pack()
+        tk.Label(self, text="Contraseña:", bg='#B2FFF9', fg='black').pack((pady=(10, 5))
         self.entry_password = tk.Entry(self, show="*")
-        self.entry_password.pack()
+        self.entry_password.pack(pady=(0, 10))
 
-        tk.Button(self, text="Registrar", command=self.registrar_usuario, bg='lightblue', fg='black').pack()
-        tk.Button(self, text="Volver", command=self.master.show_iniciar_sesion, bg='lightcoral', fg='black').pack()
+        tk.Button(self, text="Registrar", command=self.registrar_usuario, bg='lightblue', fg='black').pack(pady=5)
+        tk.Button(self, text="Volver", command=self.master.show_iniciar_sesion, bg='lightcoral', fg='black').pack(pady=5)
 
     def registrar_usuario(self): #Método para registrar usuario
         nombre = self.entry_usuario.get().strip()
@@ -132,13 +132,13 @@ class GestionCitas(tk.Frame): #Clase con el sistema de gestión de citas
         self.master = master
         self.usuario = usuario
 
-        tk.Label(self, text=f"Bienvenido/a {self.usuario.nombre}", bg='#B2FFF9', fg='black').pack()
+        tk.Label(self, text=f"Bienvenido/a {self.usuario.nombre}", bg='#B2FFF9', fg='black').pack(pady=(10, 10))
         self.citas_listbox = tk.Listbox(self)
-        self.citas_listbox.pack()
+        self.citas_listbox.pack(pady=(0, 10))
 
-        tk.Button(self, text="Agendar Cita", command=self.agendar_cita, bg='lightblue', fg='black').pack()
-        tk.Button(self, text="Eliminar Cita", command=self.eliminar_cita, bg='lightcoral', fg='black').pack()
-        tk.Button(self, text="Cerrar Sesión", command=self.cerrar_sesion, bg='lightyellow', fg='black').pack()
+        tk.Button(self, text="Agendar Cita", command=self.agendar_cita, bg='lightblue', fg='black').pack(pady=5)
+        tk.Button(self, text="Eliminar Cita", command=self.eliminar_cita, bg='lightcoral', fg='black').pack(pady=5)
+        tk.Button(self, text="Cerrar Sesión", command=self.cerrar_sesion, bg='lightyellow', fg='black').pack(pady=5)
 
     def actualizar_lista_citas(self): #Método para actualizar citas
         self.citas_listbox.delete(0, tk.END)
